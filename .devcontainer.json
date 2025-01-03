@@ -1,6 +1,6 @@
 {
     "name": "svrooij/home-assistant-proxmox",
-    "image": "mcr.microsoft.com/devcontainers/python:3.12",
+    "image": "mcr.microsoft.com/devcontainers/python:3.13",
     "postCreateCommand": "scripts/setup",
     "forwardPorts": [
         8123
@@ -18,7 +18,8 @@
                 "github.vscode-pull-request-github",
                 "ms-python.python",
                 "ms-python.vscode-pylance",
-                "ryanluker.vscode-coverage-gutters"
+                "ryanluker.vscode-coverage-gutters",
+                "ms-python.debugpy"
             ],
             "settings": {
                 "files.eol": "\n",
@@ -26,7 +27,7 @@
                 "editor.formatOnPaste": true,
                 "editor.formatOnSave": true,
                 "editor.formatOnType": false,
-                "files.trimTrailingWhitespace": true,
+                "files.trimTrailingWhitespace": false,
                 "python.analysis.typeCheckingMode": "basic",
                 "python.analysis.autoImportCompletions": true,
                 "python.defaultInterpreterPath": "/usr/local/bin/python",
@@ -45,5 +46,10 @@
                 "libpcap-dev"
             ]
         }
+    },
+    "containerEnv": {
+        "LC_ALL": "en_US.UTF-8",
+        "LANG": "en_US.UTF-8",
+        "LANGUAGE": "en_US.UTF-8"
     }
 }
