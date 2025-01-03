@@ -1,15 +1,15 @@
 {
   "domain": "proxmoxve_beta",
-  "name": "Proxmox VE",
+  "name": "Proxmox VE (beta)",
   "codeowners": ["@svrooij"],
   "config_flow": true,
   "documentation": "https://github.com/svrooij/home-assistant-components",
   "iot_class": "local_polling",
+  "issue_tracker": "https://github.com/svrooij/home-assistant-components/issues",
   "loggers": ["pyproxmox-ve"],
   "quality_scale": "bronze",
   "requirements": [
     "pyproxmox-ve@git+https://github.com/svrooij/pyproxmox-ve@feature/vms"
   ],
-  "issue_tracker": "https://github.com/svrooij/home-assistant-components/issues",
   "version": "0.8.0"
 }
