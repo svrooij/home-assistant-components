@@ -13,7 +13,6 @@
   ],
   "quality_scale": "bronze",
   "requirements": [
-    "pydantic==2.10.4",
     "pyproxmox-ve@git+https://github.com/svrooij/pyproxmox-ve@feature/vms"
   ],
   "version": "0.8.1"
