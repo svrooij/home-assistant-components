@@ -1,0 +1,18 @@
+{
+    "config": {
+        "step": {
+            "user": {
+                "description": "If you need help with the configuration have a look here: https://github.com/svrooij/home-assistant-components This integration does not accept passwords, you'll need to create a token!",
+                "data": {
+                    "host": "Hostname",
+                    "username": "Username",
+                    "realm": "Login realm (pam, pve, etc)",
+                    "token": "Token",
+                    "token_id": "Token ID",
+                    "port": "Port (8006)",
+                    "verify_ssl": "Verify SSL"
+                }
+            }
+        }
+    }
+}

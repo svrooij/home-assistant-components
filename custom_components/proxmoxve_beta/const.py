@@ -1,0 +1,51 @@
+"""Constants for ProxmoxVE."""
+
+import logging
+
+DOMAIN = "proxmoxve_beta"
+PROXMOX_CLIENTS = "proxmox_clients"
+CONF_TOKEN_ID = "token_id"
+CONF_REALM = "realm"
+CONF_NODE = "node"
+CONF_NODES = "nodes"
+CONF_VMS = "vms"
+CONF_CONTAINERS = "containers"
+
+COMMAND_NONE = "none"
+COMMAND_REBOOT = "reboot"
+COMMAND_RESET = "reset"
+COMMAND_RESUME = "resume"
+COMMAND_SHUTDOWN = "shutdown"
+COMMAND_START = "start"
+COMMAND_STOP = "stop"
+COMMAND_SUSPEND = "suspend"
+
+COMMANDS_VM = [
+    COMMAND_REBOOT,
+    COMMAND_RESET,
+    COMMAND_RESUME,
+    COMMAND_SHUTDOWN,
+    COMMAND_START,
+    COMMAND_STOP,
+    COMMAND_SUSPEND,
+]
+
+COMMANDS_CONTAINER = [
+    COMMAND_REBOOT,
+    COMMAND_RESUME,
+    COMMAND_SHUTDOWN,
+    COMMAND_START,
+    COMMAND_STOP,
+    COMMAND_SUSPEND,
+]
+
+COORDINATORS = "coordinators"
+
+DEFAULT_PORT = 8006
+DEFAULT_REALM = "pve"
+DEFAULT_VERIFY_SSL = False
+TYPE_VM = 0
+TYPE_CONTAINER = 1
+UPDATE_INTERVAL = 60
+
+_LOGGER = logging.getLogger(__package__)
