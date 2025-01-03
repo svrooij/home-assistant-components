@@ -1,6 +1,6 @@
 {
   "domain": "proxmoxve",
-  "name": "Proxmox VE (beta)",
+  "name": "Proxmox VE",
   "codeowners": ["@svrooij"],
   "config_flow": true,
   "documentation": "https://github.com/svrooij/home-assistant-components",
