@@ -2,7 +2,7 @@
 
 import logging
 
-DOMAIN = "proxmoxve_beta"
+DOMAIN = "proxmoxve"
 PROXMOX_CLIENTS = "proxmox_clients"
 CONF_TOKEN_ID = "token_id"
 CONF_REALM = "realm"

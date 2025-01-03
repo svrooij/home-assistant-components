@@ -1,5 +1,5 @@
 {
-    "name": "Stephans HACS",
+    "name": "Proxmox VE (beta)",
     "homeassistant": "2024.12.0",
     "hacs": "2.0.1"
 }

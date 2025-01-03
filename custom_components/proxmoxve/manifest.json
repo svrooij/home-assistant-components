@@ -1,5 +1,5 @@
 {
-  "domain": "proxmoxve_beta",
+  "domain": "proxmoxve",
   "name": "Proxmox VE (beta)",
   "codeowners": ["@svrooij"],
   "config_flow": true,
@@ -9,7 +9,9 @@
   "loggers": ["pyproxmox-ve"],
   "quality_scale": "bronze",
   "requirements": [
+    "pydantic-core==2.27.2",
+    "pydantic==2.10.4",
     "pyproxmox-ve@git+https://github.com/svrooij/pyproxmox-ve@feature/vms"
   ],
-  "version": "0.8.0"
+  "version": "0.8.1"
 }
