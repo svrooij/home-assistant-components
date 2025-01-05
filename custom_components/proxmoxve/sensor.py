@@ -1,6 +1,7 @@
 """Binary sensor to read Proxmox VE data."""
 
 from __future__ import annotations
+from typing import Any
 
 from homeassistant.components.sensor import SensorEntity, SensorStateClass
 from homeassistant.config_entries import ConfigEntry
@@ -123,7 +124,6 @@ class ProxmoxVmSensor(ProxmoxEntity, SensorEntity):
     @property
     def native_value(self) -> float | None:
         """Return the state of the sensor."""
-
         data = self.get_coordinator_data()
         if data is None:
             return None
@@ -132,16 +132,31 @@ class ProxmoxVmSensor(ProxmoxEntity, SensorEntity):
             if not data.memory or not data.memory_usage:
                 return None
             return round(data.memory_usage / data.memory * 100, 3)
-        # calculate cpu usage percentage cpu is a float and cpus is an int
+        # Proxmox VE seems to return the cpu usage in percentage (0-100)
         if not data.cpu or not data.cpus:
             return None
-        return round(data.cpu / data.cpus * 100, 3)
+        return round(data.cpu * 100, 3)
 
     @property
     def available(self) -> bool:
         """Return sensor availability."""
-
         return True
+
+    @property
+    def extra_state_attributes(self) -> dict[str, Any] | None:
+        """Return the state attributes."""
+        data = self.get_coordinator_data()
+        if data is None:
+            return {}
+        if self._memory:
+            return {
+                "memory": data.memory,
+                "memory_usage": data.memory_usage,
+            }
+        return {
+            "cpu": data.cpu,
+            "cpus": data.cpus,
+        }
 
     @property
     def entity_category(self) -> EntityCategory | None:
