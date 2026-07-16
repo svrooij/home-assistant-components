@@ -68,17 +68,28 @@ CONFIG_SCHEMA = vol.Schema(
 
 async def async_setup_entry(hass: HomeAssistant, entry: ProxmoxConfigEntry) -> bool:
     """Set up the Proxmox VE component."""
-
     _LOGGER.debug("setup %s with config:%s", entry.title, entry.data)
-    entry.coordinator = ProxmoxDataUpdateCoordinator(
-        hass, entry.title, dict(entry.data)
-    )
 
-    # await hass.async_create_task(entry.coordinator.configure_client())
-    # coordinator = ProxmoxDataUpdateCoordinator(hass, entry.title, dict(entry.data))
+    # Merge options into config so that nodes updated via the options flow take effect.
+    config = dict(entry.data)
+    if entry.options and CONF_NODES in entry.options:
+        config[CONF_NODES] = entry.options[CONF_NODES]
+
+    entry.coordinator = ProxmoxDataUpdateCoordinator(hass, entry.title, config)
+
     await entry.coordinator.async_config_entry_first_refresh()
-    # entry.runtime_data = coordinator
     await hass.config_entries.async_forward_entry_setups(
         entry, [Platform.BINARY_SENSOR, Platform.SELECT, Platform.SENSOR]
     )
+
+    # Reload the entry when the user saves new options.
+    entry.async_on_unload(entry.add_update_listener(_async_update_listener))
+
     return True
+
+
+async def _async_update_listener(
+    hass: HomeAssistant, entry: ProxmoxConfigEntry
+) -> None:
+    """Reload the config entry when options are updated."""
+    await hass.config_entries.async_reload(entry.entry_id)
