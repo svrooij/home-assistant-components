@@ -61,8 +61,16 @@ SCHEMA_NODE = vol.Schema(
 
 
 def _parse_id_list(value: str) -> list[int]:
-    """Parse a comma-separated string of IDs into a list of ints, ignoring blanks."""
-    return [int(x.strip()) for x in value.split(",") if x.strip()]
+    """
+    Parse a comma-separated string of IDs into a list of ints, ignoring blanks.
+
+    Raises ValueError if any token cannot be converted to an integer.
+    """
+    try:
+        return [int(x.strip()) for x in value.split(",") if x.strip()]
+    except ValueError as err:
+        msg = "IDs must be positive integers separated by commas."
+        raise ValueError(msg) from err
 
 
 class ProxmoxConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
@@ -104,15 +112,18 @@ class ProxmoxConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             if not user_input[CONF_VMS] and not user_input[CONF_CONTAINERS]:
                 errors["base"] = "no_vms_or_containers"
             else:
-                self._data[CONF_NODES].append(
-                    {
-                        CONF_NODE: user_input[CONF_NODE],
-                        CONF_VMS: _parse_id_list(user_input[CONF_VMS] or ""),
-                        CONF_CONTAINERS: _parse_id_list(
-                            user_input[CONF_CONTAINERS] or ""
-                        ),
-                    }
-                )
+                try:
+                    self._data[CONF_NODES].append(
+                        {
+                            CONF_NODE: user_input[CONF_NODE],
+                            CONF_VMS: _parse_id_list(user_input[CONF_VMS] or ""),
+                            CONF_CONTAINERS: _parse_id_list(
+                                user_input[CONF_CONTAINERS] or ""
+                            ),
+                        }
+                    )
+                except ValueError:
+                    errors["base"] = "invalid_id_format"
 
             if not errors and self._data:
                 if user_input[CONF_ADDITIONAL_NODE]:
@@ -233,29 +244,33 @@ class ProxmoxOptionsFlowHandler(config_entries.OptionsFlow):
         """Edit an existing node or add a new one."""
         errors: dict[str, str] = {}
 
-        editing = (
+        is_editing = (
             self._selected_node_index is not None
             and self._selected_node_index < len(self._nodes)
         )
         current_node: dict[str, Any] = (
-            self._nodes[self._selected_node_index] if editing else {}
+            self._nodes[self._selected_node_index] if is_editing else {}
         )
 
         if user_input is not None:
             if not user_input.get(CONF_VMS) and not user_input.get(CONF_CONTAINERS):
                 errors["base"] = "no_vms_or_containers"
             else:
-                node_data = {
-                    CONF_NODE: user_input[CONF_NODE],
-                    CONF_VMS: _parse_id_list(user_input.get(CONF_VMS) or ""),
-                    CONF_CONTAINERS: _parse_id_list(
-                        user_input.get(CONF_CONTAINERS) or ""
-                    ),
-                }
-                if editing:
-                    self._nodes[self._selected_node_index] = node_data
+                try:
+                    node_data = {
+                        CONF_NODE: user_input[CONF_NODE],
+                        CONF_VMS: _parse_id_list(user_input.get(CONF_VMS) or ""),
+                        CONF_CONTAINERS: _parse_id_list(
+                            user_input.get(CONF_CONTAINERS) or ""
+                        ),
+                    }
+                except ValueError:
+                    errors["base"] = "invalid_id_format"
                 else:
-                    self._nodes.append(node_data)
+                    if is_editing:
+                        self._nodes[self._selected_node_index] = node_data
+                    else:
+                        self._nodes.append(node_data)
 
             if not errors:
                 return self.async_create_entry(data={CONF_NODES: self._nodes})

@@ -36,7 +36,8 @@
             }
         },
         "error": {
-            "no_vms_or_containers": "At least one VM or container ID is required."
+            "no_vms_or_containers": "At least one VM or container ID is required.",
+            "invalid_id_format": "IDs must be numbers separated by commas (e.g. 100,101)."
         }
     },
     "options": {
@@ -57,7 +58,8 @@
             }
         },
         "error": {
-            "no_vms_or_containers": "At least one VM or container ID is required."
+            "no_vms_or_containers": "At least one VM or container ID is required.",
+            "invalid_id_format": "IDs must be numbers separated by commas (e.g. 100,101)."
         }
     }
 }
